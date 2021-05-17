@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Homepage</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--Link files for slideshow-->
+
+    
+  </head>
+  
+  <div class="header">
+    <div class="logo"><img src="logo.png" alt = "logo of company " > </div>
+    <h1>Ideal Property Locator</h1>
+    <p>Welcome!</p>
+  </div>
+
+
+<!-- navigation bar I may need further animation for creating a more attractive design-->
+  <div class="navbar">
+    <a href="index.html">Homepage</a>
+    <a href="Interactive Map.html">Interactive Map</a>
+  </div>
+  <!-- Code has been replicated from w3 schools -->
+<div class="message">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  <strong>Attention</strong> For assistance in using the system, please refer to the tutorial video at the bottom of this page
+</div>
+ <body>
+   <style>
+     body{
+      background-color:rgba(26, 188, 156,0.2);
+   }
+   </style>
+   
+  <div class="advert-property" >
+    <a href= "MoretonTerrace.html">
+    <img class="mySlides w3-animate-fading"  src="https://tinyurl.com/moretonterrace" style="height: 400px; width: 500px;"></a>
+    <a href = "DongolaRd.html">
+    <img class="mySlides w3-animate-fading" src="https://tinyurl.com/dongolard" style="height: 400px; width: 500px;">
+    </a>
+    <a href = "DudleyRd.html">
+    <img class="mySlides w3-animate-fading" src="https://tinyurl.com/dudleyrd" style="height: 400px; width: 500px;">
+    </a>
+    <a href = "CityPeninsula.html">
+    <img class="mySlides w3-animate-fading" src="https://tinyurl.com/citypeninsula" style="height: 400px; width: 500px;">
+    </a>  
+  </div>
+  
+  <script>
+  var myIndex = 0;
+  carousel();
+  
+  function carousel() {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";  
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = 1}    
+    x[myIndex-1].style.display = "block";  
+    setTimeout(carousel, 4000);    
+  }
+  </script>
+ <div class="tutorial">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/BWciacBL5Qs" 
+  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  
+ 
+  </body>
+
+
+ <div class="footer">
+   <div class="tag">
+     <p>
+       Created by Mohammed Shabbir
+     </p>
+   </div>
+ </div>
+  
+</html>

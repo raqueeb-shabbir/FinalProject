@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Interactive Map</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+   <!-- This is the mapbox api file-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
+    <!-- geocoder links-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css' type='text/css' />
+  
+  </head>
+  <div class="header">
+    <div class="logo"><img src="logo.png" alt = "logo of company " > </div>
+    <h1>interactive Map</h1>
+    <p>Here you can begin your search</p>
+  </div>
+
+  <div class="navbar">
+    <a href="index.html">Homepage</a>
+    <a href="Interactive Map.html">Interactive Map</a>
+    <a href="#">Property Details</a>
+  </div>
+  <nav id="menu">
+    <script>
+// CHANGE: Add layer names that need to be toggled
+var toggleableLayerIds = ['properties', 'schools', 'stations', 'supermarket', 'london-boroughs'];
+
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+  var id = toggleableLayerIds[i];
+
+  var link = document.createElement('a');
+  link.href = '#';
+  link.className = 'active';
+  link.textContent = id;
+
+  link.onclick = function(e) {
+    var clickedLayer = this.textContent;
+    e.preventDefault();
+    e.stopPropagation();
+
+    var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+    if (visibility === 'visible') {
+      map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+      this.className = '';
+    } else {
+      this.className = 'active';
+      map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+    }
+
+  };
+
+  var layers = document.getElementById('menu');
+  layers.appendChild(link);
+}
+    </script>
+
+
+  </nav>
+  <!-- Here I will input the map for usage-->
+  <div id='map' style='width: 600px; height: 600px;'></div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoicmFxdWVlYi1zaGFiYmlyIiwiYSI6ImNrbTBsaHVvdzNuYzYybm53bDFkc25vZXEifQ.SqfzDl4re2r_WOm6USqexA';
+    
+    //set bounds to London, London
+    var bounds = [ 
+      [-0.5480874218257838, 51.254533862906214], //Southwest coordinates
+      [0.29491854235135406, 51.74717611931092] //Northeast coordinates 
+    ];
+
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/raqueeb-shabbir/ckmtasf08250n17p8lpeifrt5',
+      center: [-0.118092,51.509865], // starting position [lng, lat]
+      maxBounds: bounds, // Sets bounds as max. This is required to limit the map panning
+      zoom: 2 // starting zoom
+    });
+    var geocoder = new MapboxGeocoder({ // Initialize the geocoder
+      accessToken: mapboxgl.accessToken, // Set the access token
+      mapboxgl: mapboxgl, // Set the mapbox-gl instance
+      marker: false, // Do not use the default marker style
+      placeholder: 'Search for places within London', // Placeholder text for search bar
+      bbox: [-0.5480874218257838, 51.254533862906214, 0.29491854235135406, 51.74717611931092] // boundary for London
+});
+// Add the geocoder to the map
+map.addControl(geocoder);
+
+
+// After the map style has loaded on the page,
+// add a source layer and default styling for a single point
+map.on('load', function() {
+  map.addSource('single-point', {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: []
+    }
+  });
+// Setting the school, shop and station layer to no visibility
+  map.setLayoutProperty('schools', 'visibility', 'none');
+  map.setLayoutProperty('stations', 'visibility', 'none');
+  map.setLayoutProperty('supermarket', 'visibility', 'none');  
+
+
+  map.addLayer({
+    id: 'point',
+    source: 'single-point',
+    type: 'circle',
+    paint: {
+      'circle-radius': 10,
+      'circle-color': '#448ee4'
+    }
+  });
+
+
+  // Listen for the `result` event from the Geocoder
+  // `result` event is triggered when a user makes a selection
+  //  Add a marker at the result's coordinates
+  geocoder.on('result', function(e) {
+    map.getSource('single-point').setData(e.result.geometry);
+  });
+});
+
+
+ // Code for popup on property layer
+ map.on('click','properties' ,function(e) {
+
+  
+
+  // Storing variable for html link and image for each property 
+    var MoretonTerrace = '<a href = "MoretonTerrace.html"> <img src="https://tinyurl.com/moretonterrace" style="width: 100px; height: 100px;"/></a>'
+    var AddisonBridge = '<a href = "AddisonBridge.html"> <img src="https://tinyurl.com/AddisonBridge" style="width: 100px; height: 100px;"/></a>'
+    var WestburyAvenue = '<a href = "WestburyAvenue.html"> <img src="https://tinyurl.com/westburyavenue" style="width: 100px; height: 100px;"/></a>'
+    var CityPeninsula = '<a href = "CityPeninsula.html"> <img src="https://tinyurl.com/citypeninsula" style="width: 100px; height: 100px;"/></a>'
+    var PretoriaRd = '<a href = "PretoriaRd.html"> <img src="https://tinyurl.com/pretoriard" style="width: 100px; height: 100px;"/></a>'
+    var DongolaRd = '<a href = "DongolaRd.html"> <img src="https://tinyurl.com/dongolard" style="width: 100px; height: 100px;"/></a>'
+    var MontagueRd ='<a href = "MontagueRd.html"> <img src="https://tinyurl.com/montaguerd" style="width: 100px; height: 100px;"/></a>'
+    var HighwoodCrt ='<a href = "HighwoodCrt.html"> <img src="https://tinyurl.com/highwoodcrt" style="width: 100px; height: 100px;"/></a>'
+    var DudleyRd = '<a href = "DudleyRd.html"> <img src="https://tinyurl.com/dudleyrd" style="width: 100px; height: 100px;"/></a>'
+   // Default imformation for each property  
+    var default_contents = '<h3>' + e.features[0].properties.Price + '</h3><h3>' +e.features[0].properties.Listing_type + '</h3><p>'
+       + "Address: " +  e.features[0].properties.Address + '</p><p>' + "Bedrooms: " +  e.features[0].properties.Bedrooms + 
+        '</p><p>' + "Bathrooms: " +  e.features[0].properties.Bathrooms + '</p>'
+    var popup = new mapboxgl.Popup({closeOnClick: true})
+  .setLngLat(e.lngLat)
+  .setHTML (default_contents)
+      .addTo(map);
+//If statements for each property 
+      if(e.features[0].properties.Address == "Moreton Terrrace, SW1V"){
+        popup
+       .setHTML (MoretonTerrace + default_contents)
+      }
+      if(e.features[0].properties.Address == "Addison Bridge Place, W14"){
+        popup
+       .setHTML (AddisonBridge + default_contents)
+      }
+      if(e.features[0].properties.Address == "Westbury Avenue, Southall"){
+        popup
+       .setHTML (WestburyAvenue + default_contents)
+      }
+      if(e.features[0].properties.Address == "City Peninsula, SE10"){
+        popup
+       .setHTML (CityPeninsula + default_contents)
+      }
+      if(e.features[0].properties.Address == "Pretoria Road, E11"){
+        popup
+       .setHTML (PretoriaRd + default_contents)
+      }
+      if(e.features[0].properties.Address == "Dongola Road, N17"){
+        popup
+       .setHTML (DongolaRd + default_contents)
+      }
+      if(e.features[0].properties.Address == "Montague Road, CR0"){
+        popup
+       .setHTML (MontagueRd + default_contents)
+      }
+      if(e.features[0].properties.Address == "Highwood Court, EN5"){
+        popup
+       .setHTML (HighwoodCrt + default_contents)
+      }
+      if(e.features[0].properties.Address == "Dudley Road, IG1"){
+        popup
+       .setHTML (DudleyRd + default_contents)
+      }
+      
+      
+      
+      
+      
+
+
+      
+  })
+
+// Code for school layer
+  map.on('click','schools' ,function(e) {
+    new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML('<h2>' + e.features[0].properties.SCHOOL_NAM +'</h2><p>' + e.features[0].properties.GENDER + '</p>')
+      .addTo(map);
+  })
+
+
+// Code for stations layer
+map.on('click','stations' ,function(e) {
+    new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML('<h2>' +"Station Name: " + e.features[0].properties.NAME +'</h2><p>' +"Line(s): "+ e.features[0].properties.LINES + '</p><p>' + "Zone(s): "+ e.features[0].properties.Zone + '</p>'  )
+      .addTo(map);
+      
+  })
+
+// Code for supermarket layer
+map.on('click','supermarket' ,function(e) {
+    new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML('<h2>' +"Shop: " + e.features[0].properties.name +'</h2>' )
+      .addTo(map);
+  })
+// Code for London Borough layer
+map.on('click','london-boroughs' ,function(e) {
+    new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML('<h2>' +"London borough of:  " + e.features[0].properties.name +'</h2><h3>' +"Number of registered crimes: " + e.features[0].properties.registered_crime + '</h3>' )
+      .addTo(map);
+  })
+
+ // filter coding 
+ 
+map.setFilter('properties', ['==','Listing_type', 'For Rent']);
+  </script>
+
+
+
+  <div class="footer">
+    <h2>Footer</h2>
+  </div>
+
+  
+
+</html>
