@@ -14,17 +14,20 @@
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css' type='text/css' />
   
   </head>
+  
+  <!-- main header -->
   <div class="header">
     <div class="logo"><img src="logo.png" alt = "logo of company " > </div>
     <h1>interactive Map</h1>
     <p>Here you can begin your search</p>
   </div>
-
+<!-- navigation bar-->
   <div class="navbar">
     <a href="index.html">Homepage</a>
     <a href="Interactive Map.html">Interactive Map</a>
     <a href="#">Property Details</a>
   </div>
+  <!-- begins code for filter layer menu-->
   <nav id="menu">
     <script>
 // CHANGE: Add layer names that need to be toggled
@@ -106,7 +109,7 @@ map.on('load', function() {
   map.setLayoutProperty('stations', 'visibility', 'none');
   map.setLayoutProperty('supermarket', 'visibility', 'none');  
 
-
+//adding circle to mark the position of the searched location
   map.addLayer({
     id: 'point',
     source: 'single-point',
@@ -230,9 +233,6 @@ map.on('click','london-boroughs' ,function(e) {
       .addTo(map);
   })
 
- // filter coding 
- 
-map.setFilter('properties', ['==','Listing_type', 'For Rent']);
   </script>
 
 
